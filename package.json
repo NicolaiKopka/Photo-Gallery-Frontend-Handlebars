@@ -1,0 +1,15 @@
+{
+  "name": "photo-gallery-frontend-handlebars",
+  "version": "1.0.0",
+  "description": "handlebars frontend for photo gallery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NicolaiKopka",
+  "license": "ISC",
+  "dependencies": {
+    "handlebars": "^4.7.7"
+  },
+  "type": "module"
+}
