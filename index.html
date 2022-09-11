@@ -9,11 +9,12 @@
     <script type="module" src="requests.js"></script>
 </head>
 <body>
+    <h1>Photo Gallery</h1>
+
+    <h2>Filter by</h2>
 
     <div id="tag-filter-section"></div>
-
     <script id="tag-data" type="text/x-handlebars-template">
-        <h2>Filter by</h1>
         <div>
             {{#each tags}}
             <label for="">{{tagName}}</label>
@@ -21,6 +22,26 @@
             {{/each}}
         </div>
     </script>
+
+    <div>
+        <input id="new-tag-input" type="text" placeholder="New tag name">
+        <button onclick="addNewTag();">Add Tag</button>
+    </div>
+
+    <h2>My Photos</h2>
+
+    <div id="photo-gallery"></div>
+    <script id="photo-data" type="text/x-handlebars-template">
+        <div>
+            {{#each images}}
+            <img src="{{imageUrl}}" alt="{{imageUrl}}">
+            <h4>{{imageUrl}}</h4>
+            {{/each}}
+        </div>
+    </script>
+    
+
+    
 
     
     <script src="index.js"></script>
