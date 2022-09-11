@@ -23,7 +23,7 @@ function getAllImages() {
         let allImages = template({
             images: data
         });
-        document.getElementById("photo-gallery").innerHTML += allImages;
+        document.getElementById("photo-gallery").innerHTML = allImages;
     })
 };
 
@@ -47,7 +47,6 @@ const testFunction = async () => {
 
 getAllTags();
 getAllImages();
-testFunction();
 
 
 
