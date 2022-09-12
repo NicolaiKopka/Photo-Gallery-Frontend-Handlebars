@@ -10,6 +10,17 @@ function getAllTags() {
                 tags: data
             });
             document.getElementById("tag-filter-section").innerHTML = allTags;
+            //not yet implemented
+            let allTagElements = document.getElementsByClassName("tag-check")
+            Array.prototype.forEach.call(allTagElements, function(elm) {
+                elm.addEventListener('change', (event) => {
+                    if(event.currentTarget.checked) {
+                        addTagToList(elm.name);
+                    } else {
+                        //removeTagFromList(elm.name);
+                    }
+                })
+            })
         })
 
 };

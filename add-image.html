@@ -6,35 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="handlebars-v4.7.7.js"></script>
+    <script type="text/javascript" src="variables.js"></script>
 </head>
 <body>
     <div>
         <a href="index.html">Back to gallery</a>
     </div>
 
+    <h1>Upload Image</h1>
+
     <div id="tag-filter-section-add"></div>
     <script id="tag-data-add" type="text/x-handlebars-template">
-        <div >
+        <div>
+            <h3>Available Tags</h3>
             {{#each tags}}
-            <label for="">{{tagName}}</label>
-            <input class="tag-check" name={{{tagName}}} type="checkbox">
+            <button value="{{{tagName}}}" onclick="addTagToList(this.value);">{{tagName}}</button>
             {{/each}}
         </div>
     </script>
 
-    <div>
-        <input type="text" name="image-url-input" id="image-url" placeholder="New image url">
-    </div>
+    
 
-    <div>
-        <textArea id="current-tag-area"></textArea>
-        <button onclick="uploadImage();">Upload image</button>
-    </div>
+    <h3>Tag new image with:</h3>
+    <div id="currently-tagged-section"></div>
+    <script id="current-tag-area" type="text/x-handlebars-template">
+        <div>
+            {{#each currentTagList}}
+            <span>{{this}}</span>
+            <button value="{{{this}}}" onclick="removeTagFromList(this.value);">x</button>
+            {{/each}}
+        <div>
+    </script>
 
     <div>
         <input type="text" name="new-tag-input" id="new-tag-input-add" placeholder="New tag name">
         <button onclick="addTagByButton();">Add tag</button> 
     </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" accept="image/*" name="image-url-input">
+        <button type="submit">Upload image</button>
+    </form>
+
+
+    
     
 
     

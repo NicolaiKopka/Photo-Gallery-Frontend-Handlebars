@@ -1,13 +1,14 @@
 const path = "http://localhost:8080/api/photo-gallery";
+const cloudinaryPath = `https://api.cloudinary.com/v1_1/${env_data.CLOUDINARY_ID}/image/upload`
+const form = document.querySelector("form");
 
 const currentTagList = [];
 
-//should be buttons instead of text area strings
 function addTagToList(tagName) {
     if(!currentTagList.includes(tagName.toLowerCase())) {
         currentTagList.push(tagName.toLowerCase());
-        document.getElementById("current-tag-area").innerHTML = currentTagList;
     }
+    renderCurrentlyTagged();
 }
 
 function addTagByButton() {
@@ -19,7 +20,16 @@ function addTagByButton() {
 function removeTagFromList(tagName) {
     let index = currentTagList.indexOf(tagName);
     currentTagList.splice(index, 1);
-    document.getElementById("current-tag-area").innerHTML = currentTagList;
+    renderCurrentlyTagged();
+}
+
+function renderCurrentlyTagged() {
+    var currentlyTagged = document.getElementById("current-tag-area").innerHTML;
+    var template = Handlebars.compile(currentlyTagged);
+    var tagArea = template({
+        currentTagList: currentTagList
+    });
+    document.getElementById("currently-tagged-section").innerHTML = tagArea;
 }
 
 function getAllTags() {
@@ -32,25 +42,33 @@ function getAllTags() {
                 tags: data
             });
             document.getElementById("tag-filter-section-add").innerHTML = allTags;
-            let allTagElements = document.getElementsByClassName("tag-check")
-            Array.prototype.forEach.call(allTagElements, function(elm) {
-                elm.addEventListener('change', (event) => {
-                    if(event.currentTarget.checked) {
-                        addTagToList(elm.name);
-                    } else {
-                        removeTagFromList(elm.name);
-                    }
-                })
-            })
         })
 };
 
-function uploadImage() {
-    let url = document.getElementById("image-url").value;
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const files = document.querySelector("[type=file]").files;
+    const formData = new FormData();
+    formData.append("file", files[0])
+    formData.append("upload_preset", "images_upload")
+    
+    fetch(cloudinaryPath, {
+        method: "POST",
+        body: formData
+    }).then(response => {
+       return response.json();
+    })
+    .then(data => {
+        saveImageInDB(data.secure_url)
+    })
+
+})
+
+function saveImageInDB(image_url) {
     fetch(path + "/add/image", {
         method: "POST",
         body: JSON.stringify({
-            "image-url": url,
+            "image-url": image_url,
             "tag-names": currentTagList
         }),
         headers: {
@@ -61,5 +79,4 @@ function uploadImage() {
 
 getAllTags()
 
-document.getElementById("current-tag-area").innerHTML = currentTagList;
 
