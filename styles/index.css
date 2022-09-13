@@ -3,3 +3,8 @@ img {
     width: 20rem;
     height: 20rem;
 }
+
+.hidden {
+    visibility: hidden;
+    display: none;
+}

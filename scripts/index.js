@@ -3,7 +3,7 @@ const path = "http://localhost:8080/api/photo-gallery";
 const currentTagList = [];
 
 function addTagToList(tagName) {
-    if(!currentTagList.includes(tagName.toLowerCase())) {
+    if (!currentTagList.includes(tagName.toLowerCase())) {
         currentTagList.push(tagName.toLowerCase());
     }
     renderCurrentlyTagged();
@@ -14,7 +14,7 @@ function removeTagFromList(tagName) {
     let index = currentTagList.indexOf(tagName);
     currentTagList.splice(index, 1);
     renderCurrentlyTagged();
-    if(currentTagList.length === 0) {
+    if (currentTagList.length === 0) {
         getAllImages();
     } else {
         getImagesByFilter();
@@ -36,26 +36,26 @@ function getAllTags() {
 
 function getAllImages() {
     fetch(path + "/all/images")
-    .then(response => response.json())
-    .then(data => {
-        renderImages(data)
-    })
+        .then(response => response.json())
+        .then(data => {
+            renderImages(data)
+        })
 };
 
 function getImagesByFilter() {
     fetch(path + "/all/images/by-tags", {
-        method: "POST",
-        body: JSON.stringify({
-            "tag-names": currentTagList
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        renderImages(data)
-    })
+            method: "POST",
+            body: JSON.stringify({
+                "tag-names": currentTagList
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            renderImages(data)
+        })
 }
 
 function addNewTag() {
@@ -67,6 +67,15 @@ function addNewTag() {
         .then(data => getAllTags())
         .catch(error => {
             console.error(error.getMessage());
+        })
+}
+
+function deleteImage(id) {
+    fetch(path + "/delete/" + id, {
+            method: "DELETE"
+        })
+        .then(() => {
+            getAllImages();
         })
 }
 
@@ -88,16 +97,56 @@ function renderCurrentlyTagged() {
     document.getElementById("currently-tagged-section-index").innerHTML = tagArea;
 }
 
+let updatedTagList = [];
+
+function editTagList(id) {
+    let div = document.getElementById("tagsFor" + id);
+    let removeButtons = div.querySelectorAll(".removeButton");
+    for (let i = 0; i < removeButtons.length; i++) {
+        removeButtons[i].classList.remove("hidden");
+        updatedTagList.push(removeButtons[i].value.split("-")[0]);
+    }
+
+    div.querySelector("div #newTagInput").classList.remove("hidden")
+}
+
+function addTagToEditList(currentId) {
+    let newTagName = document.getElementById("newTagFor" + currentId).value.toLowerCase();
+
+    if (!updatedTagList.includes(newTagName)) {
+        updatedTagList.push(newTagName);
+
+        let newButton = document.createElement("button");
+        newButton.innerHTML = "x";
+        newButton.setAttribute("id", "removeButton" + newTagName);
+        newButton.setAttribute("value", newTagName + "-" + currentId);
+        newButton.setAttribute("onclick", "removeTagFromEditList(this.value);");
+
+        let newSpan = document.createElement("span");
+        newSpan.setAttribute("id", "tagId" + newTagName);
+        newSpan.innerHTML = newTagName;
+
+        document.getElementById("currentTagsFor" + currentId).append(newSpan, newButton);
+    }
+
+    document.getElementById("newTagFor" + currentId).value = "";
+}
+
+function removeTagFromEditList(value) {
+    let tagName = value.split("-")[0];
+    let currentId = value.split("-")[1];
+
+    let index = updatedTagList.indexOf(tagName);
+    updatedTagList.splice(index, 1);
+
+    let span_elm = document.getElementById("tagId" + tagName);
+    let button_elm = document.getElementById("removeButton" + tagName);
+
+    document.getElementById("currentTagsFor" + currentId).removeChild(span_elm);
+    document.getElementById("currentTagsFor" + currentId).removeChild(button_elm);
+
+    console.log(updatedTagList)
+}
+
 getAllTags();
 getAllImages();
-
-
-
-
-
-
-
-
-
-
-
