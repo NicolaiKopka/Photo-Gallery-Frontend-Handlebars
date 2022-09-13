@@ -38,12 +38,7 @@ function getAllImages() {
     fetch(path + "/all/images")
     .then(response => response.json())
     .then(data => {
-        let imageData = document.getElementById("photo-data").innerHTML;
-        let template = Handlebars.compile(imageData);
-        let allImages = template({
-            images: data,
-        });
-        document.getElementById("photo-gallery").innerHTML = allImages;
+        renderImages(data)
     })
 };
 
@@ -59,12 +54,7 @@ function getImagesByFilter() {
     })
     .then(response => response.json())
     .then(data => {
-        let imageData = document.getElementById("photo-data").innerHTML;
-        let template = Handlebars.compile(imageData);
-        let allImages = template({
-            images: data
-        });
-        document.getElementById("photo-gallery").innerHTML = allImages;
+        renderImages(data)
     })
 }
 
@@ -78,6 +68,15 @@ function addNewTag() {
         .catch(error => {
             console.error(error.getMessage());
         })
+}
+
+function renderImages(data) {
+    let imageData = document.getElementById("photo-data").innerHTML;
+    let template = Handlebars.compile(imageData);
+    let allImages = template({
+        images: data
+    });
+    document.getElementById("photo-gallery").innerHTML = allImages;
 }
 
 function renderCurrentlyTagged() {
