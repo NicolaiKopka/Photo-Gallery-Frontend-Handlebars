@@ -5,21 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="handlebars-v4.7.7.js"></script>
-    <script type="module" src="requests.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="../scripts/handlebars-v4.7.7.js"></script>
 </head>
 <body>
     <h1>Photo Gallery</h1>
 
-    <h2>Filter by</h2>
+    <h3>Filter by</h3>
+
+    <!-- section for current filter by tags-->
+    <div id="currently-tagged-section-index"></div>
+    <script id="current-tag-area-index" type="text/x-handlebars-template">
+        <div>
+            {{#each currentTagList}}
+            <label for="{{{this}}}">{{this}}</label>
+            <button value="{{{this}}}" onclick="removeTagFromList(this.value);">x</button>
+            {{/each}}
+        </div>
+    </script>
 
     <!--/ display section for all tags -->
     <div id="tag-filter-section"></div>
     <script id="tag-data" type="text/x-handlebars-template">
         <div>
+            <h4>Available Tags</h4>
             {{#each tags}}
-            <label for="">{{tagName}}</label>
-            <input type="checkbox">
+            <button value="{{{tagName}}}" onclick="addTagToList(this.value);">{{tagName}}</button>
             {{/each}}
         </div>
     </script>
@@ -37,6 +48,12 @@
         <div>
             {{#each images}}
             <img src="{{imageUrl}}" alt="{{imageUrl}}">
+            <h5>Tags</h5>
+            <div>
+                {{#each imageTags}}
+                <span>{{this.tagName}}</span>
+                {{/each}}
+            </div>
             <h4>{{imageUrl}}</h4>
             {{/each}}
         </div>
@@ -48,7 +65,7 @@
     
 
     
-    <script src="index.js"></script>
+    <script src="../scripts/index.js"></script>
     
 </body>
 </html>
