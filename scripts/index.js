@@ -2,6 +2,8 @@ const path = "http://localhost:8080/api/photo-gallery";
 
 const currentTagList = [];
 
+const form = document.querySelector("form");
+
 function addTagToList(tagName) {
     if (!currentTagList.includes(tagName.toLowerCase())) {
         currentTagList.push(tagName.toLowerCase());
@@ -144,9 +146,16 @@ function removeTagFromEditList(value) {
 
     document.getElementById("currentTagsFor" + currentId).removeChild(span_elm);
     document.getElementById("currentTagsFor" + currentId).removeChild(button_elm);
-
-    console.log(updatedTagList)
 }
+
+form.addEventListener("submit", (ev) => {
+    if(!form.checkValidity()) {
+        ev.preventDefault()
+    }
+
+    form.classList.add("was-validated")
+    
+})
 
 getAllTags();
 getAllImages();
