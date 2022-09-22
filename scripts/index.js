@@ -110,6 +110,7 @@ function editTagList(id) {
     }
 
     div.querySelector("div #newTagInput").classList.remove("hidden")
+    document.getElementById("saveOnEdit" + id).classList.remove("hidden")
 }
 
 function addTagToEditList(currentId) {
@@ -146,6 +147,21 @@ function removeTagFromEditList(value) {
 
     document.getElementById("currentTagsFor" + currentId).removeChild(span_elm);
     document.getElementById("currentTagsFor" + currentId).removeChild(button_elm);
+}
+
+function updateImageTags(id) {
+    fetch(path + "/edit/image", {
+        method: "PUT",
+        body: JSON.stringify({
+            "image-id": id,
+            "tag-names": updatedTagList,
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(() => {
+        location.reload();
+    })
 }
 
 form.addEventListener("submit", (ev) => {

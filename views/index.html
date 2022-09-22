@@ -69,6 +69,7 @@
                     <div class="card-footer">
                         <h5>Tags</h5>
                         <button class="btn btn-primary btn-sm" value="{{{id}}}" onclick="editTagList(this.value);">Edit</button>
+                        <button id="saveOnEdit{{{id}}}" class="btn btn-primary btn-sm hidden" value="{{{id}}}" onclick="updateImageTags(this.value);">Save</button>
                         <div id="tagsFor{{{id}}}">
                             <div id="currentTagsFor{{{id}}}">
                                 {{#each imageTags}}
