@@ -1,3 +1,5 @@
+import { testOutput } from "./testModule";
+
 const path = "http://localhost:8080/api/photo-gallery";
 
 const currentTagList = [];
@@ -175,3 +177,4 @@ form.addEventListener("submit", (ev) => {
 
 getAllTags();
 getAllImages();
+testOutput();
